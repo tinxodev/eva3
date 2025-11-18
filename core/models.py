@@ -1,4 +1,3 @@
-from django.db import models
 
 # Create your models here.
 from django.db import models
@@ -6,11 +5,11 @@ from django.core.exceptions import ValidationError
 from datetime import timedelta
 from django.utils import timezone
 
-# Duración máxima de la reserva: 2 horas (requerimiento) 
+# Duración maxima de la reserva: 2 horas
 MAX_RESERVATION_DURATION_HOURS = 2
 
 
-#modelo para la sala de estudio
+# Modelo para la sala de estudio
 class Sala(models.Model):
     """
     Modelo para la gestión de Salas de Estudio. [cite: 17]
@@ -49,12 +48,8 @@ class Sala(models.Model):
 #modelo para la reserva de sala de estudio
 class Reserva(models.Model):
     sala_reservada = models.ForeignKey(Sala, on_delete=models.CASCADE)
-    
-    # --- CAMPOS NUEVOS ---
     nombre_persona = models.CharField(max_length=100)
     apellido_persona = models.CharField(max_length=100)
-    # ---------------------
-
     rut_persona = models.CharField(max_length=12)
     hora_inicio = models.DateTimeField(default=timezone.now)
     hora_termino = models.DateTimeField()
@@ -66,10 +61,8 @@ class Reserva(models.Model):
         ordering = ['hora_inicio'] 
 
     def clean(self):
-        """
-        Método de validación que se ejecuta antes de guardar (llamado por ModelForm/save).
-        Implementa las reglas de negocio. [cite: 14, 29]
-        """
+     
+ 
         #Validar que la duración de la reserva no exceda el máximo de 2 horas. 
         duracion = self.hora_termino - self.hora_inicio
         max_duracion = timedelta(hours=MAX_RESERVATION_DURATION_HOURS)
@@ -91,19 +84,19 @@ class Reserva(models.Model):
 
 
     def save(self, *args, **kwargs):
-        # 1. Asignar horas si es un objeto nuevo
+        # Asignar horas si es un objeto nuevo
         if not self.id: 
             if not self.hora_inicio:
                 self.hora_inicio = timezone.now()
             self.hora_termino = self.hora_inicio + timedelta(hours=MAX_RESERVATION_DURATION_HOURS)
 
-        # 2. Validar AHORA (las horas ya existen)
+        # Validar AHORA (las horas ya existen)
         self.full_clean()
         
-        # 3. Guardar en BD
+        # Guardar en BD
         super().save(*args, **kwargs)
         
-        # 4. Actualizar sala
+        # Actualizar sala
         self.sala_reservada.actualizar_disponibilidad()
         
     def __str__(self):

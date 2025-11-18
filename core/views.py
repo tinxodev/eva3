@@ -1,15 +1,13 @@
-# core/views.py
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.contrib import messages 
-from datetime import timedelta
 from .models import Sala, Reserva
 from .forms import ReservaForm 
 
 def sala_list(request):
-    """Muestra la página principal con todas las salas y su estado."""
+    #Muestra la página principal con todas las salas y su estado
     salas = Sala.objects.filter(habilitada=True)
 
     for sala in salas:
@@ -18,11 +16,10 @@ def sala_list(request):
     context = {
         'salas': salas,
     }
-    # (Usa 'sala_list.html' si tus templates están directos en /templates/)
     return render(request, 'sala_list.html', context)
 
 def sala_detail(request, pk):
-    """Muestra el detalle de una sala específica."""
+   # Muestra el detalle de una sala específica
     sala = get_object_or_404(Sala, pk=pk)
     
     reserva_activa = Reserva.objects.filter(
@@ -34,30 +31,15 @@ def sala_detail(request, pk):
         'sala': sala,
         'reserva_activa': reserva_activa,
     }
-    # (Usa 'sala_detail.html' si tus templates están directos en /templates/)
+   
     return render(request, 'sala_detail.html', context)
 
-# ---
-# --- LA FUNCIÓN CRÍTICA ES ESTA ---
-# ---
-# core/views.py
 
-# --- Asegúrate de tener estas importaciones ---
-from django.shortcuts import render, redirect, get_object_or_404
-from django.utils import timezone
-from django.core.exceptions import ValidationError
-from django.contrib import messages 
-from datetime import timedelta
-from .models import Sala, Reserva
-from .forms import ReservaForm 
-# ---------------------------------------------
-
-# ... (tus otras vistas, sala_list, sala_detail) ...
 
 def reserva_create(request, sala_pk):
-    """
-    Maneja la creación de una nueva reserva (con nombre y apellido).
-    """
+    
+    # aqui se maneja la creación de una nueva reserva (con nombre y apellido).
+    
     sala = get_object_or_404(Sala, pk=sala_pk)
 
     if not sala.disponible:
@@ -69,25 +51,26 @@ def reserva_create(request, sala_pk):
         
         if form.is_valid():
             try:
-                # 3. Obtenemos TODOS los datos validados
+                # Obtener todos los datos validados
                 rut_validado = form.cleaned_data['rut_persona']
                 nombre_validado = form.cleaned_data['nombre_persona']
                 apellido_validado = form.cleaned_data['apellido_persona']
                 
-                # 4. CREAMOS el objeto Reserva manualmente
+                # Crear el objeto Reserva manualmente
                 reserva = Reserva(
                     sala_reservada=sala,
                     rut_persona=rut_validado,
-                    nombre_persona=nombre_validado,  # <--- AÑADIDO
-                    apellido_persona=apellido_validado # <--- AÑADIDO
+                    nombre_persona=nombre_validado,  
+                    apellido_persona=apellido_validado 
                 )
                 
-                # 5. GUARDAMOS:
+                # Se guarda en la base de datos
                 reserva.save() 
                 
                 messages.success(request, f"Reserva de {sala.nombre} creada con éxito.")
                 return redirect('sala_list') 
             
+            # manejo de error de validación
             except ValidationError as e:
                 error_msg = list(e.message_dict.values())[0][0] if isinstance(e.message_dict, dict) else str(e)
                 messages.error(request, f"Error en la reserva: {error_msg}")
