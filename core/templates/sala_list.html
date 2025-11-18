@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Salas de Estudio</title>
+</head>
+<body>
+    <h1>Listado de Salas de Estudio</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>MENSAJE: {{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% for sala in salas %}
+        <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+            <h2>{{ sala.nombre }}</h2>
+            <p>Capacidad Máxima: {{ sala.capacidad_maxima }}</p>
+
+            {% if sala.disponible %}
+                <p>Estado: **DISPONIBLE**</p>
+                <a href="{% url 'reserva_create' sala_pk=sala.pk %}">Reservar</a>
+            {% else %}
+                <p>Estado: **RESERVADA**</p>
+            {% endif %}
+
+            <p><a href="{% url 'sala_detail' pk=sala.pk %}">Ver Detalle</a></p>
+        </div>
+    {% empty %}
+        <p>No hay salas habilitadas para mostrar.</p>
+    {% endfor %}
+
+    <p><a href="/admin/">Acceder a la Interfaz del Administrador</a></p>
+</body>
+</html>

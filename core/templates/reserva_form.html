@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservar Sala - {{ sala.nombre }}</title>
+</head>
+<body>
+    <h1>Reservar Sala: {{ sala.nombre }}</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>MENSAJE: {{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <p>
+            <label for="{{ form.nombre_persona.id_for_label }}">Nombre:</label><br>
+            {{ form.nombre_persona }}
+            {% if form.nombre_persona.errors %}<span>{{ form.nombre_persona.errors }}</span>{% endif %}
+        </p>
+
+        <p>
+            <label for="{{ form.apellido_persona.id_for_label }}">Apellido:</label><br>
+            {{ form.apellido_persona }}
+            {% if form.apellido_persona.errors %}<span>{{ form.apellido_persona.errors }}</span>{% endif %}
+        </p>
+
+        <p>
+            <label for="{{ form.rut_persona.id_for_label }}">Rut de la Persona que Reserva:</label><br>
+            {{ form.rut_persona }}
+            {% if form.rut_persona.errors %}<span>{{ form.rut_persona.errors }}</span>{% endif %}
+        </p>
+
+        <button type="submit">Confirmar Reserva</button>
+    </form>
+
+    <p><a href="{% url 'sala_list' %}">← Cancelar y Volver</a></p>
+</body>
+</html>
