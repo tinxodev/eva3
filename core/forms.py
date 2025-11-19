@@ -1,6 +1,6 @@
 
 from django import forms
-import re  # Importa la librería de Expresiones Regulares
+import re  
 from django.core.exceptions import ValidationError 
 
 class ReservaForm(forms.Form):

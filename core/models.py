@@ -82,7 +82,7 @@ class Reserva(models.Model):
         if solapamientos.exists():
             raise ValidationError("La sala ya está reservada en el período solicitado. Debe esperar hasta que venza el plazo anterior.")
 
-
+#*args y **kwargs permiten pasar argumentos adicionales al método save original
     def save(self, *args, **kwargs):
         # Asignar horas si es un objeto nuevo
         if not self.id: 

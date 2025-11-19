@@ -72,6 +72,7 @@ def reserva_create(request, sala_pk):
             
             # manejo de error de validación
             except ValidationError as e:
+                #aqui extraigo el mensaje de error 
                 error_msg = list(e.message_dict.values())[0][0] if isinstance(e.message_dict, dict) else str(e)
                 messages.error(request, f"Error en la reserva: {error_msg}")
         else:
