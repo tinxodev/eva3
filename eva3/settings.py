@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-import environ  # <--- 1. Importar environ
+import environ  
 import os
 from pathlib import Path
 
@@ -81,7 +81,7 @@ DATABASES = {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'postgres',
             'USER': 'postgres',
-            'PASSWORD': env('PASSWORD'),  # Usar la variable de entorno
+            'PASSWORD': env('PASSWORD'),  
             'HOST': 'localhost',  
             'PORT': '5432',       
         }

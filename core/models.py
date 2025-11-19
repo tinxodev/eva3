@@ -30,10 +30,10 @@ class Sala(models.Model):
 
 #funcion para actualizar la disponibilidad de la sala
     def actualizar_disponibilidad(self):
-        """
-        Verifica si hay alguna reserva activa (que no ha expirado) para esta sala
-        y actualiza su estado de disponibilidad. [cite: 14, 15]
-        """
+        
+        #Verifica si hay alguna reserva activa (que no ha expirado) para esta sala
+        #y actualiza su estado de disponibilidad. [cite: 14, 15]
+        
         # Una reserva activa es aquella cuya hora_termino es mayor al momento actual
         reservas_activas = Reserva.objects.filter(
             sala_reservada=self,
