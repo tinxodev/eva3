@@ -12,8 +12,8 @@ MAX_RESERVATION_DURATION_HOURS = 2
 # Modelo para la sala de estudio
 class Sala(models.Model):
     
-    #Modelo para la gestión de Salas de Estudio. [cite: 17]
-    #Permite al administrador agregar, editar y eliminar salas. [cite: 18]
+    #Modelo para la gestión de Salas de Estudio
+    #Permite al administrador agregar, editar y eliminar salas
    
     nombre = models.CharField(max_length=100, unique=True) 
     capacidad_maxima = models.IntegerField() 
@@ -32,7 +32,7 @@ class Sala(models.Model):
     def actualizar_disponibilidad(self):
         
         #Verifica si hay alguna reserva activa (que no ha expirado) para esta sala
-        #y actualiza su estado de disponibilidad. [cite: 14, 15]
+        #y actualiza su estado de disponibilidad
         
         # Una reserva activa es aquella cuya hora_termino es mayor al momento actual
         reservas_activas = Reserva.objects.filter(
