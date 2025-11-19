@@ -11,3 +11,4 @@ venv/
 
 # Cache de Python
 __pycache__/
+.gitignore
