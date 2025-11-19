@@ -11,10 +11,10 @@ MAX_RESERVATION_DURATION_HOURS = 2
 
 # Modelo para la sala de estudio
 class Sala(models.Model):
-    """
-    Modelo para la gestión de Salas de Estudio. [cite: 17]
-    Permite al administrador agregar, editar y eliminar salas. [cite: 18]
-    """
+    
+    #Modelo para la gestión de Salas de Estudio. [cite: 17]
+    #Permite al administrador agregar, editar y eliminar salas. [cite: 18]
+   
     nombre = models.CharField(max_length=100, unique=True) 
     capacidad_maxima = models.IntegerField() 
     disponible = models.BooleanField(default=True)
